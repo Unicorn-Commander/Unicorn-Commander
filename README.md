@@ -363,6 +363,16 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 ---
 
+## Star History
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Unicorn-Commander/Unicorn-Commander,Unicorn-Commander/Ops-Center-OSS,Unicorn-Commander/Unicorn-Brigade-OSS&type=Date)](https://star-history.com/#Unicorn-Commander/Unicorn-Commander&Unicorn-Commander/Ops-Center-OSS&Unicorn-Commander/Unicorn-Brigade-OSS&Date)
+
+</div>
+
+---
+
 ## License
 
 [MIT](LICENSE) — use it, modify it, ship it.
@@ -371,7 +381,7 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 <div align="center">
 
-**[Ops-Center-OSS](https://github.com/Unicorn-Commander/Ops-Center-OSS)** · **[Unicorn-Brigade-OSS](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** · **[unicorncommander.com](https://unicorncommander.com)**
+**[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** · **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** · **[unicorncommander.com](https://unicorncommander.com)**
 
 Built by [Magic Unicorn Unconventional Technology & Stuff Inc](https://magicunicorn.tech)
 
