@@ -1,0 +1,6 @@
+[submodule "ops-center"]
+	path = ops-center
+	url = https://github.com/Unicorn-Commander/Ops-Center-OSS.git
+[submodule "unicorn-brigade"]
+	path = unicorn-brigade
+	url = https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS.git

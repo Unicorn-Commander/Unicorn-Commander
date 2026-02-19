@@ -1,0 +1,163 @@
+version: '3.8'
+
+services:
+  # =================================================================
+  # Infrastructure
+  # =================================================================
+
+  unicorn-postgresql:
+    image: postgres:16-alpine
+    container_name: unicorn-postgresql
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-unicorn}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-unicorn}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    ports:
+      - "5432:5432"
+    networks:
+      - unicorn-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-unicorn}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  unicorn-redis:
+    image: redis:7-alpine
+    container_name: unicorn-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - unicorn-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  unicorn-keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: unicorn-keycloak
+    restart: unless-stopped
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://unicorn-postgresql:5432/${POSTGRES_USER:-unicorn}
+      KC_DB_USERNAME: ${POSTGRES_USER:-unicorn}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-unicorn}
+    ports:
+      - "8080:8080"
+    depends_on:
+      unicorn-postgresql:
+        condition: service_healthy
+    networks:
+      - unicorn-network
+
+  # =================================================================
+  # Ops-Center (The Colonel) — Admin Dashboard
+  # =================================================================
+
+  ops-center:
+    build:
+      context: ./ops-center
+      dockerfile: Dockerfile
+    container_name: ops-center
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    environment:
+      # Database
+      POSTGRES_HOST: unicorn-postgresql
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-unicorn}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-unicorn}
+      POSTGRES_DB: ${OPS_CENTER_DB:-unicorn_db}
+      # Redis
+      REDIS_HOST: unicorn-redis
+      REDIS_PORT: 6379
+      # Keycloak
+      KEYCLOAK_URL: ${KEYCLOAK_URL:-http://unicorn-keycloak:8080}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-uchub}
+      KEYCLOAK_CLIENT_ID: ${OPS_CENTER_CLIENT_ID:-ops-center}
+      KEYCLOAK_CLIENT_SECRET: ${OPS_CENTER_CLIENT_SECRET:-change-me}
+      # Billing
+      BILLING_ENABLED: ${BILLING_ENABLED:-false}
+    depends_on:
+      unicorn-postgresql:
+        condition: service_healthy
+      unicorn-redis:
+        condition: service_healthy
+    networks:
+      - unicorn-network
+
+  # =================================================================
+  # Unicorn Brigade (The General) — Agent Orchestration
+  # =================================================================
+
+  unicorn-brigade:
+    build:
+      context: ./unicorn-brigade
+      dockerfile: Dockerfile
+    container_name: unicorn-brigade
+    restart: unless-stopped
+    ports:
+      - "8112:8112"
+    environment:
+      PORT: 8112
+      # Database
+      DATABASE_URL: postgresql://${POSTGRES_USER:-unicorn}:${POSTGRES_PASSWORD:-unicorn}@unicorn-postgresql:5432/${BRIGADE_DB:-brigade_db}
+      # Redis
+      REDIS_URL: ${REDIS_URL:-redis://unicorn-redis:6379}
+      # Ops-Center integration
+      OPS_CENTER_URL: http://ops-center:8084
+      OPS_CENTER_LLM_ENDPOINT: http://ops-center:8084/api/v1/llm/chat/completions
+      BRIGADE_SERVICE_KEY: ${BRIGADE_SERVICE_KEY:-change-me}
+      # Keycloak
+      KEYCLOAK_URL: ${KEYCLOAK_URL:-http://unicorn-keycloak:8080}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-uchub}
+      KEYCLOAK_CLIENT_ID: ${BRIGADE_CLIENT_ID:-brigade}
+      KEYCLOAK_CLIENT_SECRET: ${BRIGADE_CLIENT_SECRET:-change-me}
+      # JWT
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+    depends_on:
+      unicorn-postgresql:
+        condition: service_healthy
+      unicorn-redis:
+        condition: service_healthy
+      ops-center:
+        condition: service_started
+    networks:
+      - unicorn-network
+
+  # =================================================================
+  # Brigade Frontend
+  # =================================================================
+
+  brigade-frontend:
+    build:
+      context: ./unicorn-brigade/frontend
+      dockerfile: Dockerfile
+    container_name: brigade-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - unicorn-brigade
+    networks:
+      - unicorn-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  unicorn-network:
+    driver: bridge
