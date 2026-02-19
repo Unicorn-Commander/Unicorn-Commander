@@ -45,7 +45,7 @@ services:
     image: quay.io/keycloak/keycloak:26.0
     container_name: unicorn-keycloak
     restart: unless-stopped
-    command: start-dev
+    command: start-dev --import-realm
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
@@ -53,6 +53,8 @@ services:
       KC_DB_URL: jdbc:postgresql://unicorn-postgresql:5432/${POSTGRES_USER:-unicorn}
       KC_DB_USERNAME: ${POSTGRES_USER:-unicorn}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-unicorn}
+    volumes:
+      - ./ops-center/keycloak-theme/realm:/opt/keycloak/data/import
     ports:
       - "8080:8080"
     depends_on:

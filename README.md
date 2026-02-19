@@ -193,7 +193,21 @@ Real-time view of agent operations — active missions with progress tracking, a
 
 ## Quick Start
 
-### 1. Clone
+### Option A: One-Command Setup
+
+```bash
+git clone --recursive https://github.com/Unicorn-Commander/Unicorn-Commander.git
+cd Unicorn-Commander
+./setup.sh
+```
+
+The setup script auto-generates secure secrets, initializes submodules, imports the Keycloak SSO realm, and starts all services.
+
+Use `./setup.sh --quick` to skip prompts and accept all defaults.
+
+### Option B: Manual Setup
+
+#### 1. Clone
 
 ```bash
 git clone --recursive https://github.com/Unicorn-Commander/Unicorn-Commander.git
@@ -206,7 +220,7 @@ Already cloned without `--recursive`?
 git submodule update --init --recursive
 ```
 
-### 2. Configure
+#### 2. Configure
 
 ```bash
 cp .env.example .env
@@ -215,7 +229,7 @@ cp .env.example .env
 
 For a personal/dev deployment, the defaults work out of the box with `BILLING_ENABLED=false`.
 
-### 3. Run
+#### 3. Run
 
 ```bash
 # Everything
@@ -226,7 +240,9 @@ docker compose up -d ops-center        # Admin dashboard only
 docker compose up -d unicorn-brigade   # Agent platform only
 ```
 
-### 4. Open
+The Keycloak `uchub` realm (with pre-configured OAuth clients for Ops-Center and Brigade, plus identity provider stubs for Google, GitHub, and Microsoft) is auto-imported on first boot.
+
+#### 4. Open
 
 | Service | URL | What You'll See |
 |---------|-----|-----------------|
@@ -263,6 +279,7 @@ Unicorn-Commander/
 ├── ops-center/              # Git submodule → Ops-Center-OSS
 ├── unicorn-brigade/         # Git submodule → Unicorn-Brigade-OSS
 ├── docker-compose.yml       # Full-stack orchestration
+├── setup.sh                 # One-command installer
 ├── init-db.sh               # Creates both databases on first run
 ├── .env.example             # Environment template
 ├── .gitmodules              # Submodule references
