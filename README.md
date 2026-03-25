@@ -31,8 +31,9 @@ Unicorn Commander is a self-hosted AI cloud platform that combines **infrastruct
 
 | System | Role | What It Does |
 |--------|------|-------------|
-| **[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** (The Colonel) | Infrastructure | Users, orgs, billing, SSO, LLM proxy, service management, credit system |
+| **[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** (The Colonel) | Infrastructure | Users, orgs, billing, SSO, LLM proxy, service management, credit system, federation mesh |
 | **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** (The General) | Agent Orchestration | 17 AI agents, workflow engine, 46 MCP servers, voice agents, real-time coordination |
+| **AI Services** (Optional) | Self-hosted AI | 9 microservices: embeddings, reranking, STT, TTS, OCR, model manager, vLLM, Bolt.diy, proxy |
 
 They share authentication (Keycloak SSO), database infrastructure (PostgreSQL), and Brigade routes all LLM calls through Ops-Center for centralized billing and usage tracking.
 
@@ -189,6 +190,54 @@ Real-time view of agent operations — active missions with progress tracking, a
 - Separate databases (`unicorn_db` for Ops-Center, `brigade_db` for Brigade) on shared PostgreSQL
 - Redis provides caching for both services
 
+### AI Services (Optional)
+
+Unicorn Commander ships with **9 self-hosted AI microservices**, all opt-in via Docker Compose profiles:
+
+```bash
+# Start with AI services
+docker compose --profile ai up -d
+
+# Or pick individual services
+docker compose --profile embeddings --profile tts up -d
+```
+
+| Service | Port | What It Does |
+|---------|------|-------------|
+| **Embeddings** | 7997 | Vector embeddings (Nomic, BGE, GTE, Sentence Transformers) |
+| **Reranker** | 7998 | Cross-encoder document reranking for search relevance |
+| **WhisperX** | 9528 | Speech-to-text with word-level timestamps and speaker diarization |
+| **Kokoro TTS** | 8880 | Text-to-speech with ONNX models, multiple voices |
+| **Tika OCR** | 9998 | Document OCR via Apache Tika |
+| **Model Manager** | 8085 | Web UI for switching between vLLM-hosted models |
+| **vLLM** | 8000 | High-performance LLM serving |
+| **Bolt.diy** | -- | Browser-based AI code IDE |
+| **Infinity Proxy** | -- | On-demand container proxy (starts services when needed) |
+
+### Monitoring (Optional)
+
+```bash
+docker compose --profile monitoring up -d
+```
+
+| Service | Port | What It Does |
+|---------|------|-------------|
+| **Prometheus** | 9090 | Metrics collection from all services |
+| **Grafana** | 3001 | Dashboards and visualization |
+
+### Cloud GPU Federation
+
+Bootstrap GPU instances on **RunPod**, **Lambda**, or **Vast.ai** and connect them to your Unicorn Commander mesh:
+
+```bash
+cd cloud-gpu
+FEDERATION_PEERS=https://your-ops-center.example.com \
+FEDERATION_KEY=your-key \
+./bootstrap.sh
+```
+
+The federation idle monitor automatically shuts down GPU instances when not in use to save costs.
+
 ---
 
 ## Quick Start
@@ -238,6 +287,12 @@ docker compose up -d
 # Or just what you need
 docker compose up -d ops-center        # Admin dashboard only
 docker compose up -d unicorn-brigade   # Agent platform only
+
+# With AI services (embeddings, TTS, STT, OCR, vLLM, etc.)
+docker compose --profile ai up -d
+
+# With monitoring (Prometheus + Grafana)
+docker compose --profile monitoring up -d
 ```
 
 The Keycloak `uchub` realm (with pre-configured OAuth clients for Ops-Center and Brigade, plus identity provider stubs for Google, GitHub, and Microsoft) is auto-imported on first boot.
