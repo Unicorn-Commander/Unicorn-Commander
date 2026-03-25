@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  model-manager:
+    build: .
+    container_name: model-manager-dev
+    ports:
+      - "8084:8080"
+    environment:
+      VLLM_URL: "http://localhost:8000"
+      VLLM_API_KEY: "test-key"

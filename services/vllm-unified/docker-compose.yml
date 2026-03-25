@@ -1,0 +1,42 @@
+services:
+  vllm-unified-manager:
+    image: docker:24-dind
+    container_name: vllm-unified-manager
+    hostname: vllm-unified-manager
+    networks:
+      unicorn-network:
+        aliases:
+          - vllm-unified
+          - unicorn-vllm  # Use the same alias as traditional vLLM
+          - vllm
+    ports:
+      - "8000:8000"  # Unified manager port (replaces traditional vLLM)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./volumes/vllm_models:/volumes/vllm_models
+      - ./volumes/vllm_manager:/volumes
+      - ./scripts/unified-vllm-manager.py:/app/manager.py:ro
+    environment:
+      - HF_TOKEN=${HF_TOKEN:-}
+      - VLLM_API_KEY=${VLLM_API_KEY:-}
+      - EXTERNAL_HOST=${EXTERNAL_HOST:-localhost}
+      - PYTHONUNBUFFERED=1
+    command: >
+      sh -c "
+        apk add --no-cache python3 py3-pip gcc python3-dev musl-dev linux-headers &&
+        pip3 install --break-system-packages --no-cache-dir fastapi uvicorn httpx psutil pydantic &&
+        python3 /app/manager.py 8000
+      "
+    restart: unless-stopped
+    labels:
+      - "service.group=ai"
+      - "service.description=Unified vLLM Model Manager"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  unicorn-network:
+    external: true

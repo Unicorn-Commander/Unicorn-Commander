@@ -156,9 +156,123 @@ services:
     networks:
       - unicorn-network
 
+  # =================================================================
+  # AI Services (Optional — enable with --profile ai)
+  # =================================================================
+
+  unicorn-embeddings:
+    build:
+      context: ./services/embeddings
+      dockerfile: Dockerfile
+    container_name: unicorn-embeddings
+    restart: unless-stopped
+    profiles: ["ai", "embeddings"]
+    ports:
+      - "7997:7997"
+    environment:
+      MODEL_NAME: ${EMBEDDING_MODEL:-nomic-ai/nomic-embed-text-v1.5}
+      DEVICE: ${EMBEDDING_DEVICE:-cpu}
+    networks:
+      - unicorn-network
+
+  unicorn-reranker:
+    build:
+      context: ./services/reranker
+      dockerfile: Dockerfile
+    container_name: unicorn-reranker
+    restart: unless-stopped
+    profiles: ["ai", "reranker"]
+    ports:
+      - "7998:7997"
+    networks:
+      - unicorn-network
+
+  unicorn-whisperx:
+    build:
+      context: ./services/whisperx
+      dockerfile: Dockerfile
+    container_name: unicorn-whisperx
+    restart: unless-stopped
+    profiles: ["ai", "stt"]
+    ports:
+      - "9528:9528"
+    environment:
+      HF_TOKEN: ${HF_TOKEN:-}
+    networks:
+      - unicorn-network
+
+  unicorn-kokoro-tts:
+    build:
+      context: ./services/kokoro-tts
+      dockerfile: Dockerfile
+    container_name: unicorn-kokoro-tts
+    restart: unless-stopped
+    profiles: ["ai", "tts"]
+    ports:
+      - "8880:8880"
+    networks:
+      - unicorn-network
+
+  unicorn-tika:
+    build:
+      context: ./services/tika-ocr
+      dockerfile: Dockerfile
+    container_name: unicorn-tika
+    restart: unless-stopped
+    profiles: ["ai", "ocr"]
+    ports:
+      - "9998:9998"
+    networks:
+      - unicorn-network
+
+  unicorn-model-manager:
+    build:
+      context: ./services/model-manager
+      dockerfile: Dockerfile
+    container_name: unicorn-model-manager
+    restart: unless-stopped
+    profiles: ["ai", "model-manager"]
+    ports:
+      - "8085:8085"
+    environment:
+      VLLM_URL: ${VLLM_URL:-http://unicorn-vllm:8000}
+    networks:
+      - unicorn-network
+
+  # =================================================================
+  # Monitoring (Optional — enable with --profile monitoring)
+  # =================================================================
+
+  unicorn-prometheus:
+    image: prom/prometheus:latest
+    container_name: unicorn-prometheus
+    restart: unless-stopped
+    profiles: ["monitoring"]
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus-config.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - unicorn-network
+
+  unicorn-grafana:
+    image: grafana/grafana:latest
+    container_name: unicorn-grafana
+    restart: unless-stopped
+    profiles: ["monitoring"]
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - unicorn-prometheus
+    networks:
+      - unicorn-network
+
 volumes:
   postgres_data:
   redis_data:
+  grafana_data:
 
 networks:
   unicorn-network:

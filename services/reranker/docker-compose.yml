@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  reranker:
+    build: .
+    container_name: reranker-dev
+    ports:
+      - "8083:8080"
+    environment:
+      MODEL_NAME: "BAAI/bge-reranker-v2-m3"
+      DEVICE: "cpu"

@@ -1,0 +1,144 @@
+# Service profiles for cloud GPU instances
+# Selected via SERVICE_PROFILE env var in bootstrap.sh
+#
+# The bootstrap script uses the bash associative arrays for runtime logic,
+# but this YAML serves as the canonical reference and can be parsed by
+# future tooling (Ops-Center cloud launcher, etc).
+#
+# Engine selection by GPU compute capability:
+#   Compute 8.0+ (Ampere/Hopper/Blackwell): vLLM, FlashAttention, FP16/BF16 native
+#   Compute 7.5 (Turing): llama.cpp GGUF, PyTorch, no FlashAttention 2
+#   Compute 6.1 (Pascal): llama.cpp GGUF, PyTorch torch engine only
+
+profiles:
+  music:
+    description: "ACE-Step 1.5 music generation"
+    min_vram_gb: 14
+    services:
+      - name: majiks-worker
+        compose_file: services/majiks-studio-web/docker-compose.majiks.yml
+        service_name: majiks-worker
+        health_check: "http://localhost:8091/health"
+        endpoint_path: "/api/v1/studio/generate"
+        federation_service_type: music_gen
+        models: ["acestep-v15-turbo", "acestep-v15-base"]
+    # Engine selection per GPU tier:
+    #   Ampere+ (A100/H100/GH200): FP16 native, no quantization, torch.compile
+    #   Turing (RTX 6000): int8_weight_only quantization
+    #   Pascal (P40): int8_weight_only, larger VAE chunk size
+    cloud_env:
+      ACESTEP_QUANTIZATION: "none"       # FP16 native on cloud GPUs (48GB+ VRAM)
+      ACESTEP_COMPILE: "true"            # torch.compile for speed
+      ACESTEP_VAE_DECODE_CHUNK_SIZE: "3000"  # larger chunks with more VRAM
+
+  image:
+    description: "FLUX image generation"
+    min_vram_gb: 12
+    services:
+      - name: artwork-worker
+        compose_file: services/artwork-studio/docker-compose.artwork.yml
+        service_name: artwork-worker
+        health_check: "http://localhost:8095/health"
+        endpoint_path: "/studio/album-artwork"
+        federation_service_type: image_gen
+        models: ["flux1-schnell"]
+    # Engine selection:
+    #   Ampere+: FP16 native diffusers pipeline (no GGUF needed)
+    #   Turing: FP16 native (RTX 6000 has tensor cores)
+    #   Pascal: GGUF Q8_0 (no tensor cores, quantized for memory)
+    cloud_env:
+      FLUX_QUANT_METHOD: "nf4"           # nf4 on cloud, gguf only needed for Pascal
+
+  stt:
+    description: "WhisperX speech-to-text"
+    min_vram_gb: 2
+    services:
+      - name: whisperx
+        compose_file: services/whisperx/docker-compose.yml
+        service_name: whisperx
+        health_check: "http://localhost:9000/health"
+        endpoint_path: "/v1/audio/transcriptions"
+        federation_service_type: stt
+        models: ["whisperx-large-v3"]
+    # Engine selection:
+    #   Cloud GPU: CUDA FP16, large-v3 model (best quality)
+    #   Home server: CPU int8 (saves GPU VRAM for other services)
+    cloud_env:
+      WHISPER_MODEL: "large-v3"          # best model on cloud (enough VRAM)
+      DEVICE: "cuda"                     # GPU acceleration
+      COMPUTE_TYPE: "float16"            # FP16 on Ampere+
+      BATCH_SIZE: "32"                   # larger batches with more VRAM
+
+  tts:
+    description: "Kokoro text-to-speech"
+    min_vram_gb: 1
+    services:
+      - name: kokoro-tts
+        compose_file: services/kokoro-tts/docker-compose.yml
+        service_name: kokoro-tts
+        health_check: "http://localhost:8880/health"
+        endpoint_path: "/v1/audio/speech"
+        federation_service_type: tts
+        models: ["kokoro-v0.19"]
+    # Works on any hardware — ONNX runtime auto-selects best provider
+    cloud_env:
+      DEVICE: "GPU"                      # CUDA provider on cloud
+
+  llm:
+    description: "LLM inference"
+    min_vram_gb: 8
+    services:
+      # Engine auto-selected by bootstrap based on GPU compute capability:
+      #   Ampere+ (compute >= 8.0): vLLM with FP16/BF16 — 2-5x faster than llama.cpp
+      #   Turing/Pascal (compute < 8.0): llama.cpp with GGUF quantization
+      - name: llm-engine
+        compose_file: auto  # bootstrap selects vllm or llama-router compose
+        service_name: auto
+        health_check: "http://localhost:8085/health"
+        endpoint_path: "/v1/chat/completions"
+        federation_service_type: llm
+        models: ["qwen3.5-27b"]
+    cloud_env:
+      # vLLM settings for Ampere+ cloud GPUs
+      VLLM_GPU_MEMORY_UTILIZATION: "0.90"
+      VLLM_MAX_MODEL_LEN: "32768"       # larger context with more VRAM
+      VLLM_TENSOR_PARALLEL_SIZE: "1"     # single GPU
+      VLLM_DTYPE: "bfloat16"            # BF16 on Ampere+
+
+  embeddings:
+    description: "Embeddings + reranker"
+    min_vram_gb: 4
+    services:
+      # Engine auto-selected:
+      #   Ampere+: HuggingFace TEI with FlashAttention 2 (fastest)
+      #   Pascal/Turing: Infinity with PyTorch torch engine (compatible)
+      - name: embeddings
+        compose_file: auto  # bootstrap selects TEI or Infinity
+        service_name: auto
+        health_check: "http://localhost:8082/health"
+        endpoint_path: "/v1/embeddings"
+        federation_service_type: embeddings
+        models: ["bge-m3"]
+      - name: reranker
+        compose_file: auto
+        service_name: auto
+        health_check: "http://localhost:8083/health"
+        endpoint_path: "/v1/rerank"
+        federation_service_type: reranker
+        models: ["bge-reranker-v2-m3"]
+    cloud_env:
+      # TEI settings for Ampere+ cloud GPUs
+      TEI_MAX_BATCH_TOKENS: "32768"
+      TEI_MAX_CONCURRENT_REQUESTS: "512"
+
+  all:
+    description: "Run everything that fits in VRAM"
+    # Bootstrap script checks available VRAM and starts profiles in priority order:
+    #   1. embeddings (4 GB)  - most commonly needed
+    #   2. stt        (2 GB)  - cheap, very useful
+    #   3. tts        (1 GB)  - almost free
+    #   4. llm        (8 GB)  - if room
+    #   5. image      (12 GB) - if room
+    #   6. music      (14 GB) - needs dedicated GPU basically
+    #
+    # On a GH200 (96GB), ALL services run simultaneously in FP16

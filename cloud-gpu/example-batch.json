@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Neon Dreams",
+    "genre": "synthwave",
+    "mood": "epic",
+    "lyrics": "[Verse]\nDriving through the neon night\nCity lights reflecting in my eyes\nSynthesizers fill the air\nLost in time beyond compare\n\n[Chorus]\nNeon dreams are all I see\nElectric hearts set us free\nRunning through the midnight glow\nLetting all our colors show",
+    "tags": "synthwave, retro, 80s, driving, neon",
+    "duration": 60,
+    "artist": "Magic Unicorn",
+    "album": "Digital Horizons",
+    "generate_artwork": true
+  },
+  {
+    "title": "Coffee Shop Morning",
+    "genre": "lofi",
+    "mood": "chill",
+    "instrumental": true,
+    "tags": "lofi, chill, jazz, piano, rain",
+    "duration": 90,
+    "artist": "Magic Unicorn",
+    "album": "Quiet Moments"
+  },
+  {
+    "title": "Thunder Road",
+    "genre": "rock",
+    "mood": "energetic",
+    "lyrics": "[Verse]\nPedal to the metal down the open road\nEngine roaring louder with every mile\nNothing but the highway and the radio\nLeaving all my troubles back a while\n\n[Chorus]\nThunder road take me home\nWhere the wild winds blow\nThunder road I'll never slow\nTill I find where I belong",
+    "tags": "rock, driving, guitar, drums, powerful",
+    "duration": 60,
+    "tempo": 140,
+    "artist": "Magic Unicorn",
+    "album": "Digital Horizons",
+    "generate_artwork": true
+  }
+]
