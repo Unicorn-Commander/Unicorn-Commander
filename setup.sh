@@ -161,6 +161,12 @@ BILLING_ENABLED=false
 # OPENROUTER_API_KEY=sk-or-...
 # OPENAI_API_KEY=sk-...
 # ANTHROPIC_API_KEY=sk-ant-...
+
+# --- AI Services (enable with: docker compose --profile ai up -d) ---
+# EMBEDDING_MODEL=nomic-ai/nomic-embed-text-v1.5
+# EMBEDDING_DEVICE=cpu
+# HF_TOKEN=hf_...
+# VLLM_URL=http://unicorn-vllm:8000
 EOF
 
   success ".env created with secure random secrets"
@@ -200,6 +206,12 @@ main() {
   echo -e "    Brigade UI:     ${CYAN}http://localhost:3000${RESET}"
   echo -e "    Keycloak Admin: ${CYAN}http://localhost:8080${RESET}"
   echo ""
+  echo -e "  ${BOLD}Optional Services:${RESET} (start with --profile)"
+  echo -e "    AI Services:    ${CYAN}docker compose --profile ai up -d${RESET}"
+  echo -e "    Monitoring:     ${CYAN}docker compose --profile monitoring up -d${RESET}"
+  echo -e "    Prometheus:     ${CYAN}http://localhost:9090${RESET}  (with --profile monitoring)"
+  echo -e "    Grafana:        ${CYAN}http://localhost:3001${RESET}  (with --profile monitoring)"
+  echo ""
   echo -e "  ${BOLD}Keycloak:${RESET}"
   echo -e "    The ${CYAN}uchub${RESET} realm is auto-imported on first boot."
   echo -e "    Admin console: http://localhost:8080/admin/"
@@ -210,6 +222,8 @@ main() {
   echo -e "    2. Open Keycloak and update OAuth client secrets to match .env"
   echo -e "    3. Configure identity providers (Google, GitHub, Microsoft)"
   echo -e "    4. Add your LLM API keys to .env for AI features"
+  echo -e "    5. Optional: Start AI services with 'docker compose --profile ai up -d'"
+  echo -e "    6. Optional: Start monitoring with 'docker compose --profile monitoring up -d'"
   echo ""
   echo -e "  ${DIM}Run 'docker compose logs -f' to watch startup progress${RESET}"
   echo ""
