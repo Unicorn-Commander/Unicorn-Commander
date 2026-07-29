@@ -6,11 +6,11 @@
 
 # Unicorn Commander
 
-### The Open-Source AI Cloud Platform
+### Mesh-Distributed AI Infrastructure & Agent Orchestration
 
-*Two battle-tested systems. One integrated stack. Self-hosted. No vendor lock-in.*
+*VPN-meshed multi-node infrastructure. A GPU compute fabric that routes inference to wherever the hardware is. Federated SSO. Agent-to-agent orchestration across the mesh. Self-hosted. Open source.*
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-purple?style=for-the-badge)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-teal?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
@@ -19,7 +19,7 @@
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/Unicorn-Commander)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/aaronyo)
 
-**[Quick Start](#-quick-start)** · **[Ops-Center](#-ops-center--the-colonel)** · **[Unicorn Brigade](#-unicorn-brigade--the-general)** · **[Architecture](#-architecture)** · **[Website](https://unicorncommander.com)**
+**[Quick Start](#quick-start)** · **[Ops-Center](#ops-center--the-colonel)** · **[Unicorn Brigade](#unicorn-brigade--the-general)** · **[The Ecosystem](#the-ecosystem)** · **[Architecture](#architecture)** · **[Website](https://unicorncommander.com)**
 
 </div>
 
@@ -27,15 +27,19 @@
 
 ## What Is Unicorn Commander?
 
-Unicorn Commander is a self-hosted AI cloud platform that combines **infrastructure management** with **multi-agent orchestration** into a single integrated stack. It's what you deploy when you want to run your own AI operations — users, billing, LLM routing, agent workflows, voice agents, and 1,360+ tools — without handing your data to someone else.
+Nearly every AI application needs the same foundation underneath it: users, authentication, permissions, agents, models, memory, search, files, billing, and APIs. Unicorn Commander is that foundation, built once, self-hosted, so the applications on top only have to build what actually makes them different.
+
+It ties multiple machines together over a secure mesh and routes AI workloads to whichever node has hardware available.
 
 | System | Role | What It Does |
 |--------|------|-------------|
 | **[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** (The Colonel) | Infrastructure | Users, orgs, billing, SSO, LLM proxy, service management, credit system, federation mesh |
-| **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** (The General) | Agent Orchestration | 17 AI agents, workflow engine, 46 MCP servers, voice agents, real-time coordination |
+| **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** (The General) | Agent Orchestration | 18 AI agents, workflow engine, 46 MCP servers, voice agents, real-time coordination |
 | **AI Services** (Optional) | Self-hosted AI | 9 microservices: embeddings, reranking, STT, TTS, OCR, model manager, vLLM, Bolt.diy, proxy |
 
-They share authentication (Keycloak SSO), database infrastructure (PostgreSQL), and Brigade routes all LLM calls through Ops-Center for centralized billing and usage tracking.
+They share authentication (Keycloak SSO) and database infrastructure (PostgreSQL), and Brigade routes all LLM calls through Ops-Center for centralized billing and usage tracking.
+
+A suite of applications is built on this foundation. See **[The Ecosystem](#the-ecosystem)** below.
 
 ---
 
@@ -43,7 +47,7 @@ They share authentication (Keycloak SSO), database infrastructure (PostgreSQL), 
 
 > *Your AI infrastructure command center. Manage everything from one dashboard.*
 
-Ops-Center is the admin backbone — user management with bulk operations, subscription billing (Stripe + Lago), multi-tenant organizations, LLM model management, service health monitoring, and a credit system that tracks every API call across your platform.
+Ops-Center is the admin backbone: user management with bulk operations, subscription billing (Stripe + Lago), multi-tenant organizations, LLM model management, service health monitoring, and a credit system that tracks every API call across your platform.
 
 **624 API endpoints** · **Keycloak SSO** (Google, GitHub, Microsoft) · **Stripe/Lago billing** · **RBAC** · **BYOK support**
 
@@ -53,42 +57,18 @@ Ops-Center is the admin backbone — user management with bulk operations, subsc
 
 <img src=".github/images/ops-center-homepage.png" width="720"/>
 
-The landing page users see — search bar (powered by Center-Deep), quick access cards to all platform services, and admin dashboard link.
-
----
-
-#### Admin Dashboard — System Overview
-
-<img src=".github/images/ops-center-admin-dashboard.png" width="720"/>
-
-Infrastructure at a glance — CPU/GPU/RAM utilization, system alerts, service health grid for 13+ services (PostgreSQL, Redis, Keycloak, vLLM, Ollama, etc.), and recent activity timeline.
-
----
-
-#### Service Management
-
-<img src=".github/images/ops-center-services.png" width="720"/>
-
-Start, stop, and monitor every service in your stack. Per-service CPU, RAM, and disk usage. Container management with one-click restart.
-
----
-
-#### AI Model Management
-
-<img src=".github/images/ops-center-models.png" width="720"/>
-
-Configure vLLM and Ollama models. GPU memory allocation, quantization settings, max model length. Search HuggingFace for compatible models and deploy them directly.
+The landing page users see. Search bar powered by Center-Deep, quick access cards to platform services, and the admin dashboard link.
 
 </div>
 
 ### Ops-Center Highlights
 
-- **User Management** — Bulk import/export, advanced filtering (10+ fields), role hierarchy, API key management, user impersonation
-- **Billing** — Stripe + Lago integration, subscription tiers (Trial → Enterprise), usage metering, credit system with per-model pricing
-- **Organizations** — Multi-tenant with org-level feature grants, team roles, invitation system
-- **LLM Proxy** — OpenAI-compatible API, routes to OpenRouter/OpenAI/Anthropic/local models, BYOK passthrough (no credits charged)
-- **Image Generation** — DALL-E 3, GPT Image 1, Gemini Imagen 3, Stable Diffusion via unified API
-- **Configurable Billing** — `BILLING_ENABLED=false` for personal servers, `CREDIT_EXEMPT_TIERS=*` for internal use
+- **User Management:** Bulk import/export, advanced filtering (10+ fields), role hierarchy, API key management, user impersonation
+- **Billing:** Stripe + Lago integration, subscription tiers (Trial through Enterprise), usage metering, credit system with per-model pricing
+- **Organizations:** Multi-tenant with org-level feature grants, team roles, invitation system
+- **LLM Proxy:** OpenAI-compatible API, routes to OpenRouter/OpenAI/Anthropic/local models, BYOK passthrough (no credits charged)
+- **Image Generation:** DALL-E 3, GPT Image 1, Gemini Imagen 3, Stable Diffusion via unified API
+- **Configurable Billing:** `BILLING_ENABLED=false` for personal servers, `CREDIT_EXEMPT_TIERS=*` for internal use
 
 ---
 
@@ -96,53 +76,62 @@ Configure vLLM and Ollama models. GPU memory allocation, quantization settings, 
 
 > *The AI agent factory. Build, deploy, and orchestrate autonomous agent teams.*
 
-Unicorn Brigade is where the AI work happens — 17 specialized agents organized into military-style teams, a 3-tier hierarchical workflow engine (Orchestrator → Team Leads → Workers), 46 MCP servers providing ~1,360 enterprise tools, real-time orchestration with SSE streaming, and self-correcting workflows that retry on failure.
+Unicorn Brigade is where the agent work happens: 18 specialized agents organized into military-style teams, a 3-tier hierarchical workflow engine (Orchestrator to Team Leads to Workers), 46 MCP servers providing roughly 1,360 enterprise tools, real-time orchestration with SSE streaming, and self-correcting workflows that retry on failure.
 
-**17 agents** · **46 MCP servers** · **~1,360 tools** · **25 workflow templates** · **Voice agents** · **A2A + MCP protocols**
+**18 agents** · **46 MCP servers** · **~1,360 tools** · **25 workflow templates** · **Voice agents** · **A2A + MCP protocols**
 
 <div align="center">
-
-#### Agent Orchestration Mockup
-
-<img src=".github/images/brigade-orchestration-demo.gif" width="640"/>
-
-*Conceptual mockup of multi-agent orchestration coordinating across domains.*
-
----
 
 #### Brigade Dashboard
 
 <img src=".github/images/brigade-dashboard.png" width="720"/>
 
-18 active agents across 8 domains. Quick actions to build agents, browse the library, explore tools, or read API docs. The General (orchestrator) monitors all operations from the command panel.
+18 agents across 8 domains. Quick actions to build agents, browse the library, explore tools, or read API docs. The General (orchestrator) monitors operations from the command panel.
 
 ---
 
-#### Orchestration Command Center
+#### Agent Orchestration Concept
 
-<img src=".github/images/brigade-orchestration.png" width="720"/>
+<img src=".github/images/brigade-orchestration-demo.gif" width="640"/>
 
-Real-time view of agent operations — active missions with progress tracking, agent status across all domains, and The General's command interface for natural language orchestration.
-
----
-
-#### Tool Library
-
-<img src=".github/images/brigade-tools.png" width="720"/>
-
-23 built-in tools (web search, HTTP, calculator, database, JSON, shell, memory) plus 46 MCP servers providing ~1,360 additional enterprise tools (Stripe, Salesforce, Jira, Slack, GitHub, and 40+ more).
+*Conceptual mockup of multi-agent orchestration coordinating across domains. Not a product capture.*
 
 </div>
 
 ### Brigade Highlights
 
-- **17 Production Agents** — Research, finance, code, sales, legal, medical, DevOps, content, customer support, document analysis
-- **3-Tier Workflows** — Orchestrator (GPT-4o) delegates to Team Leads (7B-14B) who assign Workers (1B-3B) for massive cost reduction
-- **46 MCP Servers** — Stripe, Salesforce, Jira, GitHub, Slack, HubSpot, Shopify, Zendesk, MongoDB, Twilio, and 36 more
-- **Ralph Self-Correction** — Workflows automatically retry on failure with error recovery and mid-execution guidance injection
-- **Voice Agents** — LiveKit WebRTC with self-hosted STT (Whisper) and TTS (Kokoro, Chatterbox voice cloning)
-- **Agent Trace** — Code attribution tracking for compliance and auditing (which AI wrote which code)
-- **Visual Workflows** — Interactive workflow builder with @xyflow/react, drag-and-drop, real-time execution tracking
+- **18 Production Agents:** Research, finance, code, sales, legal, medical, DevOps, content, customer support, document analysis
+- **3-Tier Workflows:** Orchestrator (GPT-4o) delegates to Team Leads (7B-14B) who assign Workers (1B-3B) for significant cost reduction
+- **46 MCP Servers:** Stripe, Salesforce, Jira, GitHub, Slack, HubSpot, Shopify, Zendesk, MongoDB, Twilio, and 36 more
+- **Ralph Self-Correction:** Workflows automatically retry on failure with error recovery and mid-execution guidance injection
+- **Voice Agents:** LiveKit WebRTC with self-hosted STT (Whisper) and TTS (Kokoro, Chatterbox voice cloning)
+- **Agent Trace:** Code attribution tracking for compliance and auditing (which AI wrote which code)
+- **Visual Workflows:** Interactive workflow builder with @xyflow/react, drag-and-drop, real-time execution tracking
+
+---
+
+## The Ecosystem
+
+Unicorn Commander is the foundation. These are the applications built on top of it, each self-hostable and each sharing the same identity, agents, permissions, and data layer. They are separate repos, so you can run one, several, or all of them.
+
+### Collaboration plane
+
+| Project | What It Does | Links |
+|---------|-------------|-------|
+| **Unicorn Stable** | Messaging, voice, video, meetings, and collaboration for people *and* agents. Your agents and someone else's can share a room with both of you in it. | [Code](https://github.com/Unicorn-Commander/unicorn-stable-oss) · [Live](https://stable.unicorncommander.ai/) |
+
+### Applications
+
+| Project | What It Does | Links |
+|---------|-------------|-------|
+| **Meeting-Ops** | Records meetings, works out who said what, and pushes decisions and action items into the rest of the stack. | [Code](https://github.com/Unicorn-Commander/meeting-ops-community) · [Live](https://meeting-ops.unicorncommander.ai/) |
+| **Project-Ops** | Project management where a task can be assigned to a human or an agent, and the agent can execute it. Both are first-class citizens on the same board, with the same RBAC and audit trail. | [Code](https://github.com/Unicorn-Commander/project-ops-community) · [Live](https://projectops.unicorncommander.ai/) |
+| **Contact-Ops** | The canonical record for people, identities, and relationships across the ecosystem. | [Code](https://github.com/Unicorn-Commander/contact-ops-community) |
+| **Customer-Ops** | Leads, prospects, customers, and partners. The business relationship layer over the same people. | [Code](https://github.com/Unicorn-Commander/customer-ops-community) |
+| **Email-Ops** | Turns email into structured work instead of leaving it trapped in an inbox. | [Code](https://github.com/Unicorn-Commander/email-ops-community) · [Live](https://email-ops.unicorncommander.ai/landing.html) |
+| **Accounting-Ops** | Books, reconciliation, financial records, and agents that keep it straight. | [Code](https://github.com/Unicorn-Commander/accounting-ops-community) · [Live](https://accounting-ops.unicorncommander.ai/) |
+
+Maturity varies. Ops-Center and Project-Ops have the most production mileage. Unicorn Stable is the newest. Everything listed is AGPL-3.0 and self-hostable.
 
 ---
 
@@ -161,7 +150,7 @@ Real-time view of agent operations — active missions with progress tracking, a
     │   (The Colonel)   │       │    (The General)    │
     │    :8084          │       │     :8112           │
     │                   │       │                     │
-    │ Users & Orgs      │       │ 17 AI Agents        │
+    │ Users & Orgs      │       │ 18 AI Agents        │
     │ Billing (Stripe)  │◄─────►│ Workflow Engine      │
     │ LLM Proxy         │  API  │ 46 MCP Servers       │
     │ Credit System     │       │ Voice (LiveKit)      │
@@ -273,10 +262,10 @@ git submodule update --init --recursive
 
 ```bash
 cp .env.example .env
-# Edit .env — at minimum set your database passwords
+# Edit .env, at minimum set your database passwords
 ```
 
-For a personal/dev deployment, the defaults work out of the box with `BILLING_ENABLED=false`.
+For a personal or dev deployment, the defaults work out of the box with `BILLING_ENABLED=false`.
 
 #### 3. Run
 
@@ -301,7 +290,7 @@ The Keycloak `uchub` realm (with pre-configured OAuth clients for Ops-Center and
 
 | Service | URL | What You'll See |
 |---------|-----|-----------------|
-| **Ops-Center** | [localhost:8084](http://localhost:8084) | Admin dashboard — users, services, billing |
+| **Ops-Center** | [localhost:8084](http://localhost:8084) | Admin dashboard: users, services, billing |
 | **Brigade API** | [localhost:8112](http://localhost:8112) | Agent orchestration REST API |
 | **Brigade UI** | [localhost:3000](http://localhost:3000) | Agent dashboard, chat, orchestration |
 | **Keycloak** | [localhost:8080](http://localhost:8080) | SSO admin console |
@@ -314,10 +303,10 @@ The Keycloak `uchub` realm (with pre-configured OAuth clients for Ops-Center and
 |-------|-----------|
 | **Backend** | FastAPI (Python 3.12), SQLAlchemy 2.0 |
 | **Frontend** | React 18, Vite, Tailwind CSS, Material-UI, Three.js |
-| **Auth** | Keycloak 26 (OIDC/SSO — Google, GitHub, Microsoft) |
+| **Auth** | Keycloak 26 (OIDC/SSO: Google, GitHub, Microsoft) |
 | **Database** | PostgreSQL 16 |
 | **Cache** | Redis 7 |
-| **LLM Routing** | LiteLLM proxy → OpenRouter, OpenAI, Anthropic, local models |
+| **LLM Routing** | LiteLLM proxy to OpenRouter, OpenAI, Anthropic, local models |
 | **Billing** | Stripe + Lago |
 | **Agents** | LangGraph, OpenAI Agents SDK |
 | **Protocols** | A2A (Agent-to-Agent), MCP (Model Context Protocol), UCP, Agent Trace |
@@ -338,11 +327,11 @@ Unicorn-Commander/
 ├── init-db.sh               # Creates both databases on first run
 ├── .env.example             # Environment template
 ├── .gitmodules              # Submodule references
-├── LICENSE                  # MIT
+├── LICENSE                  # AGPL-3.0
 └── README.md
 ```
 
-Each component also runs standalone — see their individual repos for single-service setup.
+Each component also runs standalone. See their individual repos for single-service setup.
 
 ## Updating
 
@@ -406,11 +395,10 @@ When running the full stack via this repo's `docker-compose.yml`:
 | Metric | Value |
 |--------|-------|
 | Ops-Center API endpoints | 624 |
-| Brigade AI agents | 17 |
+| Brigade AI agents | 18 |
 | MCP servers | 46 |
 | MCP tools available | ~1,360 |
 | Workflow templates | 25 |
-| Built-in tools | 23 |
 | Supported LLM providers | OpenRouter, OpenAI, Anthropic, Gemini, Ollama, vLLM |
 | Identity providers | Google, GitHub, Microsoft |
 | Subscription tiers | Trial, Starter, Professional, Enterprise |
@@ -430,13 +418,13 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 ## License
 
-[MIT](LICENSE) — use it, modify it, ship it.
+[AGPL-3.0](LICENSE). Use it, modify it, self-host it. If you run a modified version as a network service, the same license applies to your changes.
 
 ---
 
 <div align="center">
 
-**[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** · **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** · **[unicorncommander.com](https://unicorncommander.com)**
+**[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** · **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** · **[Unicorn Stable](https://github.com/Unicorn-Commander/unicorn-stable-oss)** · **[unicorncommander.com](https://unicorncommander.com)**
 
 Built by [Magic Unicorn Unconventional Technology & Stuff Inc](https://magicunicorn.tech)
 
