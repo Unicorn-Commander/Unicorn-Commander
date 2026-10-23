@@ -25,6 +25,33 @@
 
 ---
 
+
+## The suite — one repository per app
+
+Unicorn Commander is a family of apps that run a company, each in its own repository with its full history. This repository is the front door: the platform compose, the shared services and the map. The apps:
+
+| App | What it is | Repository |
+|---|---|---|
+| Ops-Center | the control plane: tenants, billing, federation, API keys | https://github.com/Unicorn-Commander/Ops-Center |
+| Unicorn-Brigade | the agent layer: agents, tools, memory, rooms | https://github.com/Unicorn-Commander/Unicorn-Brigade |
+| Unicorn-Stable | humans and agents in the same room (voice, video, chat) | https://github.com/Unicorn-Commander/Unicorn-Stable |
+| Accounting-Ops | agent-native accounting and books | https://github.com/Unicorn-Commander/Accounting-Ops |
+| Contact-Ops | the shared contact and identity layer | https://github.com/Unicorn-Commander/Contact-Ops |
+| Customer-Ops | customers, pipeline, quotes | https://github.com/Unicorn-Commander/Customer-Ops |
+| Email-Ops | agent-governed email with a human approval inbox | https://github.com/Unicorn-Commander/Email-Ops |
+| Project-Ops | projects, tasks, time, invoices | https://github.com/Unicorn-Commander/Project-Ops |
+| Meeting-Ops | recordings, transcripts, action items | https://github.com/Unicorn-Commander/Meeting-Ops |
+| Knowledge-Ops | the wiki and memory your agents ground on | https://github.com/Unicorn-Commander/Knowledge-Ops |
+| Security-Ops | authorized scanning with an engagement and attestation gate | https://github.com/Unicorn-Commander/Security-Ops |
+| Tax-Planning-Ops | tax plans, scenarios, statutory deadlines | https://github.com/Unicorn-Commander/Tax-Planning-Ops |
+| Brand-Ops | brand kits, marks, voices, rules | https://github.com/Unicorn-Commander/Brand-Ops |
+| Podcast-Ops | episodes, audio QA, publishing | https://github.com/Unicorn-Commander/Podcast-Ops |
+| UUDA | the fleet device agent | https://github.com/Unicorn-Commander/UUDA |
+| fleet-map | the fleet inventory and map | https://github.com/Unicorn-Commander/fleet-map |
+| Veteran-Ops | VA disability education, self-hostable | https://github.com/Unicorn-Commander/Veteran-Ops |
+
+`docker-compose.yml` here builds Ops-Center and Unicorn-Brigade straight from their repositories; the former git submodules are gone.
+
 ## What Is Unicorn Commander?
 
 Nearly every AI application needs the same foundation underneath it: users, authentication, permissions, agents, models, memory, search, files, billing, and APIs. Unicorn Commander is that foundation, built once, self-hosted, so the applications on top only have to build what actually makes them different.
