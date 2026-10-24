@@ -10,7 +10,7 @@
 
 *VPN-meshed multi-node infrastructure. A GPU compute fabric that routes inference to wherever the hardware is. Federated SSO. Agent-to-agent orchestration across the mesh. Self-hosted. Open source.*
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-purple?style=for-the-badge)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-purple?style=for-the-badge)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-teal?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
@@ -158,7 +158,7 @@ Unicorn Commander is the foundation. These are the applications built on top of 
 | **Email-Ops** | Turns email into structured work instead of leaving it trapped in an inbox. | [Code](https://github.com/Unicorn-Commander/Email-Ops) · [Live](https://email-ops.unicorncommander.ai/landing.html) |
 | **Accounting-Ops** | Books, reconciliation, financial records, and agents that keep it straight. | [Code](https://github.com/Unicorn-Commander/Accounting-Ops) · [Live](https://accounting-ops.unicorncommander.ai/) |
 
-Maturity varies. Ops-Center and Project-Ops have the most production mileage. Unicorn Stable is the newest. Everything listed is AGPL-3.0 and self-hostable.
+Maturity varies. Ops-Center and Project-Ops have the most production mileage. Unicorn Stable is the newest. Everything listed is Apache-2.0 and self-hostable.
 
 ---
 
@@ -351,7 +351,7 @@ Unicorn-Commander/
 ├── setup.sh                 # One-command installer
 ├── init-db.sh               # Creates both databases on first run
 ├── .env.example             # Environment template
-├── LICENSE                  # AGPL-3.0
+├── LICENSE                  # Apache-2.0
 └── README.md
 ```
 
@@ -442,7 +442,7 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 ## License
 
-[AGPL-3.0](LICENSE). Use it, modify it, self-host it. If you run a modified version as a network service, the same license applies to your changes.
+Unicorn Commander is licensed under the [Apache License 2.0](LICENSE). You can use, change and redistribute it, including commercially, under its terms. Our names and logos are covered by [TRADEMARKS.md](TRADEMARKS.md).
 
 ---
 
