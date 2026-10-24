@@ -60,8 +60,8 @@ It ties multiple machines together over a secure mesh and routes AI workloads to
 
 | System | Role | What It Does |
 |--------|------|-------------|
-| **[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** (The Colonel) | Infrastructure | Users, orgs, billing, SSO, LLM proxy, service management, credit system, federation mesh |
-| **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** (The General) | Agent Orchestration | 18 AI agents, workflow engine, 46 MCP servers, voice agents, real-time coordination |
+| **[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center)** (The Colonel) | Infrastructure | Users, orgs, billing, SSO, LLM proxy, service management, credit system, federation mesh |
+| **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade)** (The General) | Agent Orchestration | 18 AI agents, workflow engine, 46 MCP servers, voice agents, real-time coordination |
 | **AI Services** (Optional) | Self-hosted AI | 9 microservices: embeddings, reranking, STT, TTS, OCR, model manager, vLLM, Bolt.diy, proxy |
 
 They share authentication (Keycloak SSO) and database infrastructure (PostgreSQL), and Brigade routes all LLM calls through Ops-Center for centralized billing and usage tracking.
@@ -145,18 +145,18 @@ Unicorn Commander is the foundation. These are the applications built on top of 
 
 | Project | What It Does | Links |
 |---------|-------------|-------|
-| **Unicorn Stable** | Messaging, voice, video, meetings, and collaboration for people *and* agents. Your agents and someone else's can share a room with both of you in it. | [Code](https://github.com/Unicorn-Commander/unicorn-stable-oss) · [Live](https://stable.unicorncommander.ai/) |
+| **Unicorn Stable** | Messaging, voice, video, meetings, and collaboration for people *and* agents. Your agents and someone else's can share a room with both of you in it. | [Code](https://github.com/Unicorn-Commander/Unicorn-Stable) · [Live](https://stable.unicorncommander.ai/) |
 
 ### Applications
 
 | Project | What It Does | Links |
 |---------|-------------|-------|
-| **Meeting-Ops** | Records meetings, works out who said what, and pushes decisions and action items into the rest of the stack. | [Code](https://github.com/Unicorn-Commander/meeting-ops-community) · [Live](https://meeting-ops.unicorncommander.ai/) |
-| **Project-Ops** | Project management where a task can be assigned to a human or an agent, and the agent can execute it. Both are first-class citizens on the same board, with the same RBAC and audit trail. | [Code](https://github.com/Unicorn-Commander/project-ops-community) · [Live](https://projectops.unicorncommander.ai/) |
-| **Contact-Ops** | The canonical record for people, identities, and relationships across the ecosystem. | [Code](https://github.com/Unicorn-Commander/contact-ops-community) |
-| **Customer-Ops** | Leads, prospects, customers, and partners. The business relationship layer over the same people. | [Code](https://github.com/Unicorn-Commander/customer-ops-community) |
-| **Email-Ops** | Turns email into structured work instead of leaving it trapped in an inbox. | [Code](https://github.com/Unicorn-Commander/email-ops-community) · [Live](https://email-ops.unicorncommander.ai/landing.html) |
-| **Accounting-Ops** | Books, reconciliation, financial records, and agents that keep it straight. | [Code](https://github.com/Unicorn-Commander/accounting-ops-community) · [Live](https://accounting-ops.unicorncommander.ai/) |
+| **Meeting-Ops** | Records meetings, works out who said what, and pushes decisions and action items into the rest of the stack. | [Code](https://github.com/Unicorn-Commander/Meeting-Ops) · [Live](https://meeting-ops.unicorncommander.ai/) |
+| **Project-Ops** | Project management where a task can be assigned to a human or an agent, and the agent can execute it. Both are first-class citizens on the same board, with the same RBAC and audit trail. | [Code](https://github.com/Unicorn-Commander/Project-Ops) · [Live](https://projectops.unicorncommander.ai/) |
+| **Contact-Ops** | The canonical record for people, identities, and relationships across the ecosystem. | [Code](https://github.com/Unicorn-Commander/Contact-Ops) |
+| **Customer-Ops** | Leads, prospects, customers, and partners. The business relationship layer over the same people. | [Code](https://github.com/Unicorn-Commander/Customer-Ops) |
+| **Email-Ops** | Turns email into structured work instead of leaving it trapped in an inbox. | [Code](https://github.com/Unicorn-Commander/Email-Ops) · [Live](https://email-ops.unicorncommander.ai/landing.html) |
+| **Accounting-Ops** | Books, reconciliation, financial records, and agents that keep it straight. | [Code](https://github.com/Unicorn-Commander/Accounting-Ops) · [Live](https://accounting-ops.unicorncommander.ai/) |
 
 Maturity varies. Ops-Center and Project-Ops have the most production mileage. Unicorn Stable is the newest. Everything listed is AGPL-3.0 and self-hostable.
 
@@ -451,7 +451,7 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 <div align="center">
 
-**[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** · **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** · **[Unicorn Stable](https://github.com/Unicorn-Commander/unicorn-stable-oss)** · **[unicorncommander.com](https://unicorncommander.com)**
+**[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center)** · **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade)** · **[Unicorn Stable](https://github.com/Unicorn-Commander/Unicorn-Stable)** · **[unicorncommander.com](https://unicorncommander.com)**
 
 Built by [Magic Unicorn Unconventional Technology & Stuff Inc](https://magicunicorn.tech)
 
