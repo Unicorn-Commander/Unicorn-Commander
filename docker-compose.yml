@@ -69,7 +69,7 @@ services:
 
   ops-center:
     build:
-      context: ./ops-center
+      context: https://github.com/Unicorn-Commander/Ops-Center.git
       dockerfile: Dockerfile
     container_name: ops-center
     restart: unless-stopped
@@ -106,7 +106,7 @@ services:
 
   unicorn-brigade:
     build:
-      context: ./unicorn-brigade
+      context: https://github.com/Unicorn-Commander/Unicorn-Brigade.git
       dockerfile: Dockerfile
     container_name: unicorn-brigade
     restart: unless-stopped
@@ -145,7 +145,7 @@ services:
 
   brigade-frontend:
     build:
-      context: ./unicorn-brigade/frontend
+      context: https://github.com/Unicorn-Commander/Unicorn-Brigade.git#:frontend
       dockerfile: Dockerfile
     container_name: brigade-frontend
     restart: unless-stopped

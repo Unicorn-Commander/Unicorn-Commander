@@ -10,7 +10,7 @@
 
 *VPN-meshed multi-node infrastructure. A GPU compute fabric that routes inference to wherever the hardware is. Federated SSO. Agent-to-agent orchestration across the mesh. Self-hosted. Open source.*
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-purple?style=for-the-badge)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-purple?style=for-the-badge)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-teal?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
@@ -25,6 +25,33 @@
 
 ---
 
+
+## The suite — one repository per app
+
+Unicorn Commander is a family of apps that run a company, each in its own repository with its full history. This repository is the front door: the platform compose, the shared services and the map. The apps:
+
+| App | What it is | Repository |
+|---|---|---|
+| Ops-Center | the control plane: tenants, billing, federation, API keys | https://github.com/Unicorn-Commander/Ops-Center |
+| Unicorn-Brigade | the agent layer: agents, tools, memory, rooms | https://github.com/Unicorn-Commander/Unicorn-Brigade |
+| Unicorn-Stable | humans and agents in the same room (voice, video, chat) | https://github.com/Unicorn-Commander/Unicorn-Stable |
+| Accounting-Ops | agent-native accounting and books | https://github.com/Unicorn-Commander/Accounting-Ops |
+| Contact-Ops | the shared contact and identity layer | https://github.com/Unicorn-Commander/Contact-Ops |
+| Customer-Ops | customers, pipeline, quotes | https://github.com/Unicorn-Commander/Customer-Ops |
+| Email-Ops | agent-governed email with a human approval inbox | https://github.com/Unicorn-Commander/Email-Ops |
+| Project-Ops | projects, tasks, time, invoices | https://github.com/Unicorn-Commander/Project-Ops |
+| Meeting-Ops | recordings, transcripts, action items | https://github.com/Unicorn-Commander/Meeting-Ops |
+| Knowledge-Ops | the wiki and memory your agents ground on | https://github.com/Unicorn-Commander/Knowledge-Ops |
+| Security-Ops | authorized scanning with an engagement and attestation gate | https://github.com/Unicorn-Commander/Security-Ops |
+| Tax-Planning-Ops | tax plans, scenarios, statutory deadlines | https://github.com/Unicorn-Commander/Tax-Planning-Ops |
+| Brand-Ops | brand kits, marks, voices, rules | https://github.com/Unicorn-Commander/Brand-Ops |
+| Podcast-Ops | episodes, audio QA, publishing | https://github.com/Unicorn-Commander/Podcast-Ops |
+| UUDA | the fleet device agent | https://github.com/Unicorn-Commander/UUDA |
+| fleet-map | the fleet inventory and map | https://github.com/Unicorn-Commander/fleet-map |
+| Veteran-Ops | VA disability education, self-hostable | https://github.com/Unicorn-Commander/Veteran-Ops |
+
+`docker-compose.yml` here builds Ops-Center and Unicorn-Brigade straight from their repositories; the former git submodules are gone.
+
 ## What Is Unicorn Commander?
 
 Nearly every AI application needs the same foundation underneath it: users, authentication, permissions, agents, models, memory, search, files, billing, and APIs. Unicorn Commander is that foundation, built once, self-hosted, so the applications on top only have to build what actually makes them different.
@@ -33,8 +60,8 @@ It ties multiple machines together over a secure mesh and routes AI workloads to
 
 | System | Role | What It Does |
 |--------|------|-------------|
-| **[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** (The Colonel) | Infrastructure | Users, orgs, billing, SSO, LLM proxy, service management, credit system, federation mesh |
-| **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** (The General) | Agent Orchestration | 18 AI agents, workflow engine, 46 MCP servers, voice agents, real-time coordination |
+| **[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center)** (The Colonel) | Infrastructure | Users, orgs, billing, SSO, LLM proxy, service management, credit system, federation mesh |
+| **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade)** (The General) | Agent Orchestration | 18 AI agents, workflow engine, 46 MCP servers, voice agents, real-time coordination |
 | **AI Services** (Optional) | Self-hosted AI | 9 microservices: embeddings, reranking, STT, TTS, OCR, model manager, vLLM, Bolt.diy, proxy |
 
 They share authentication (Keycloak SSO) and database infrastructure (PostgreSQL), and Brigade routes all LLM calls through Ops-Center for centralized billing and usage tracking.
@@ -118,20 +145,20 @@ Unicorn Commander is the foundation. These are the applications built on top of 
 
 | Project | What It Does | Links |
 |---------|-------------|-------|
-| **Unicorn Stable** | Messaging, voice, video, meetings, and collaboration for people *and* agents. Your agents and someone else's can share a room with both of you in it. | [Code](https://github.com/Unicorn-Commander/unicorn-stable-oss) · [Live](https://stable.unicorncommander.ai/) |
+| **Unicorn Stable** | Messaging, voice, video, meetings, and collaboration for people *and* agents. Your agents and someone else's can share a room with both of you in it. | [Code](https://github.com/Unicorn-Commander/Unicorn-Stable) · [Live](https://stable.unicorncommander.ai/) |
 
 ### Applications
 
 | Project | What It Does | Links |
 |---------|-------------|-------|
-| **Meeting-Ops** | Records meetings, works out who said what, and pushes decisions and action items into the rest of the stack. | [Code](https://github.com/Unicorn-Commander/meeting-ops-community) · [Live](https://meeting-ops.unicorncommander.ai/) |
-| **Project-Ops** | Project management where a task can be assigned to a human or an agent, and the agent can execute it. Both are first-class citizens on the same board, with the same RBAC and audit trail. | [Code](https://github.com/Unicorn-Commander/project-ops-community) · [Live](https://projectops.unicorncommander.ai/) |
-| **Contact-Ops** | The canonical record for people, identities, and relationships across the ecosystem. | [Code](https://github.com/Unicorn-Commander/contact-ops-community) |
-| **Customer-Ops** | Leads, prospects, customers, and partners. The business relationship layer over the same people. | [Code](https://github.com/Unicorn-Commander/customer-ops-community) |
-| **Email-Ops** | Turns email into structured work instead of leaving it trapped in an inbox. | [Code](https://github.com/Unicorn-Commander/email-ops-community) · [Live](https://email-ops.unicorncommander.ai/landing.html) |
-| **Accounting-Ops** | Books, reconciliation, financial records, and agents that keep it straight. | [Code](https://github.com/Unicorn-Commander/accounting-ops-community) · [Live](https://accounting-ops.unicorncommander.ai/) |
+| **Meeting-Ops** | Records meetings, works out who said what, and pushes decisions and action items into the rest of the stack. | [Code](https://github.com/Unicorn-Commander/Meeting-Ops) · [Live](https://meeting-ops.unicorncommander.ai/) |
+| **Project-Ops** | Project management where a task can be assigned to a human or an agent, and the agent can execute it. Both are first-class citizens on the same board, with the same RBAC and audit trail. | [Code](https://github.com/Unicorn-Commander/Project-Ops) · [Live](https://projectops.unicorncommander.ai/) |
+| **Contact-Ops** | The canonical record for people, identities, and relationships across the ecosystem. | [Code](https://github.com/Unicorn-Commander/Contact-Ops) |
+| **Customer-Ops** | Leads, prospects, customers, and partners. The business relationship layer over the same people. | [Code](https://github.com/Unicorn-Commander/Customer-Ops) |
+| **Email-Ops** | Turns email into structured work instead of leaving it trapped in an inbox. | [Code](https://github.com/Unicorn-Commander/Email-Ops) · [Live](https://email-ops.unicorncommander.ai/landing.html) |
+| **Accounting-Ops** | Books, reconciliation, financial records, and agents that keep it straight. | [Code](https://github.com/Unicorn-Commander/Accounting-Ops) · [Live](https://accounting-ops.unicorncommander.ai/) |
 
-Maturity varies. Ops-Center and Project-Ops have the most production mileage. Unicorn Stable is the newest. Everything listed is AGPL-3.0 and self-hostable.
+Maturity varies. Ops-Center and Project-Ops have the most production mileage. Unicorn Stable is the newest. Everything listed is Apache-2.0 and self-hostable.
 
 ---
 
@@ -320,14 +347,11 @@ The Keycloak `uchub` realm (with pre-configured OAuth clients for Ops-Center and
 
 ```
 Unicorn-Commander/
-├── ops-center/              # Git submodule → Ops-Center-OSS
-├── unicorn-brigade/         # Git submodule → Unicorn-Brigade-OSS
 ├── docker-compose.yml       # Full-stack orchestration
 ├── setup.sh                 # One-command installer
 ├── init-db.sh               # Creates both databases on first run
 ├── .env.example             # Environment template
-├── .gitmodules              # Submodule references
-├── LICENSE                  # AGPL-3.0
+├── LICENSE                  # Apache-2.0
 └── README.md
 ```
 
@@ -410,7 +434,7 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 <div align="center">
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Unicorn-Commander/Unicorn-Commander,Unicorn-Commander/Ops-Center-OSS,Unicorn-Commander/Unicorn-Brigade-OSS&type=Date)](https://star-history.com/#Unicorn-Commander/Unicorn-Commander&Unicorn-Commander/Ops-Center-OSS&Unicorn-Commander/Unicorn-Brigade-OSS&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Unicorn-Commander/Unicorn-Commander,Unicorn-Commander/Ops-Center,Unicorn-Commander/Unicorn-Brigade&type=Date)](https://star-history.com/#Unicorn-Commander/Unicorn-Commander&Unicorn-Commander/Ops-Center-OSS&Unicorn-Commander/Unicorn-Brigade-OSS&Date)
 
 </div>
 
@@ -418,13 +442,13 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 ## License
 
-[AGPL-3.0](LICENSE). Use it, modify it, self-host it. If you run a modified version as a network service, the same license applies to your changes.
+Unicorn Commander is licensed under the [Apache License 2.0](LICENSE). You can use, change and redistribute it, including commercially, under its terms. Our names and logos are covered by [TRADEMARKS.md](TRADEMARKS.md).
 
 ---
 
 <div align="center">
 
-**[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center-OSS)** · **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade-OSS)** · **[Unicorn Stable](https://github.com/Unicorn-Commander/unicorn-stable-oss)** · **[unicorncommander.com](https://unicorncommander.com)**
+**[Ops-Center](https://github.com/Unicorn-Commander/Ops-Center)** · **[Unicorn Brigade](https://github.com/Unicorn-Commander/Unicorn-Brigade)** · **[Unicorn Stable](https://github.com/Unicorn-Commander/Unicorn-Stable)** · **[unicorncommander.com](https://unicorncommander.com)**
 
 Built by [Magic Unicorn Unconventional Technology & Stuff Inc](https://magicunicorn.tech)
 
