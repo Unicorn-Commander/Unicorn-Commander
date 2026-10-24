@@ -347,13 +347,10 @@ The Keycloak `uchub` realm (with pre-configured OAuth clients for Ops-Center and
 
 ```
 Unicorn-Commander/
-├── ops-center/              # Git submodule → Ops-Center-OSS
-├── unicorn-brigade/         # Git submodule → Unicorn-Brigade-OSS
 ├── docker-compose.yml       # Full-stack orchestration
 ├── setup.sh                 # One-command installer
 ├── init-db.sh               # Creates both databases on first run
 ├── .env.example             # Environment template
-├── .gitmodules              # Submodule references
 ├── LICENSE                  # AGPL-3.0
 └── README.md
 ```
@@ -437,7 +434,7 @@ When running the full stack via this repo's `docker-compose.yml`:
 
 <div align="center">
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Unicorn-Commander/Unicorn-Commander,Unicorn-Commander/Ops-Center-OSS,Unicorn-Commander/Unicorn-Brigade-OSS&type=Date)](https://star-history.com/#Unicorn-Commander/Unicorn-Commander&Unicorn-Commander/Ops-Center-OSS&Unicorn-Commander/Unicorn-Brigade-OSS&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Unicorn-Commander/Unicorn-Commander,Unicorn-Commander/Ops-Center,Unicorn-Commander/Unicorn-Brigade&type=Date)](https://star-history.com/#Unicorn-Commander/Unicorn-Commander&Unicorn-Commander/Ops-Center-OSS&Unicorn-Commander/Unicorn-Brigade-OSS&Date)
 
 </div>
 
